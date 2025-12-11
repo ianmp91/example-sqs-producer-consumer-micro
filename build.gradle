@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example.sqsmicro'
+version = '0.0.1-SNAPSHOT'
+description = 'Example project for sqs - Spring Boot Microservice'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+ext {
+	springCloudVersion = "4.0.0-M1"
+	springBootVersion = "4.0.0"
+	lombokVersion = "1.18.42"
+	sqsLibVersion = "0.0.3-SNAPSHOT"
+	mockitoCoreVersion = "5.20.0"
+	mockitoInlineVersion = "5.2.0"
+	junitPlatformVersion = "6.0.0"
+}
+
+dependencies {
+	// Lombok (opcional, pero ayuda con getters/setters/constructores)
+	compileOnly("org.projectlombok:lombok:${lombokVersion}")
+	annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+	// Lib SQS
+	implementation("com.example.sqslib:sqs-consumer-producer-lib:${sqsLibVersion}")
+
+	// Spring Boot Starter Web (Para los Controllers)
+	implementation("org.springframework.boot:spring-boot-starter:${springBootVersion}")
+	implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+	// Test
+	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+	testImplementation("org.springframework.boot:spring-boot-test-autoconfigure:${springBootVersion}")
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:${springBootVersion}")
+	testImplementation("io.awspring.cloud:spring-cloud-aws-starter-sqs:${springCloudVersion}")
+	testImplementation("org.mockito:mockito-core:${mockitoCoreVersion}")
+	testImplementation("org.mockito:mockito-junit-jupiter:${mockitoCoreVersion}")
+	testImplementation("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

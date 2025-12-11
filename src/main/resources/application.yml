@@ -1,0 +1,29 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: sqs-producer-consumer-micro
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    aws:
+      region:
+        static: us-east-1 # Una región arbitraria
+      # Configuración específica para SQS que apunta a ElasticMQ
+      sqs:
+        endpoint:
+          # Apunta al puerto del contenedor de ElasticMQ
+          uri: http://localhost:9324
+      credentials:
+        # Credenciales dummy que cumplen con el requisito del SDK de AWS
+        access-key: dummy
+        secret-key: dummy
+cola:
+  aws:
+    sqs:
+      producer: "cola-aws-sqs-1"
+      consumer: "cola-aws-sqs-2"
+
+security:
+  recipient-public-key-base64: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4lFlVvERd0hKGrBCiYtqItR1sQNnzNidNctzJQtZTAQc7UG2sJlrjAXeO1jUQPhz7jwbzyLt/s8zA6JhzR/+pp734MGuaCyWpoHgOG4E/We6IhxLjugiGu4CMO+dGF0pmwyNXWE3LRv1MFGXpMmCyqunV4JL5NGKn2Kd+o7nL5k/TVAPL1pfb5eSyAXAXuXGIDUJ7ZWxh/9Ed9aA+ho0iKCGNQ5mv5b6xLPL5ZfipMdzxQYprRlIWH07h5HdFcqt5udG00iceYe/OcV4D/GmUJ8rj/1MgBO9HL2qm18x3Y30zeK3iYbry8Bl0YOzLEWvNRxP5k611KVq9fFwMNcbowIDAQAB"
+  recipient-private-key-base64: "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCT0DtzmDCnowa0/L75QHIqUpcSotZdMb4AuuJ9Qiw4viw0zFKDrG3T8ypOV83z8UgRINCp7L1M+McPt+CAkP1kOk6EXfl060jJIcNfC38MhbvCksmlt7TSGZg0GYTcw2fk2+7uPiA2diG/4/7hPxV/H/v9MbSVCjMO8aL8+dAE12j44f3LcjvoHcK80BRB0LeSge4+CZA2Xp/iJmOkQKdKH0WFdnaEdV/PA3F0rhlMhb6umUG5TzKHeqdDPAiZBm34zeENhj7UBltvJTX3G47//Z4US2pmz/CsmRCIGg0ssS3akFJIbCwb9R5ZfGad8ORtn2KUS954S9nwukatSDyNAgMBAAECggEACSCvuyinwIJZtK1y4ZNwOVrWR2lU0XZz5DmmKNQARRTBSBVh9w2bzp3Se/oCFtFMgPpEyGl9Gxa1vCu/qlDJxPmwxY3EDMtGuFzkYqckFlLf0FkeKKSafurjsjvtL3DFpqVKMN4XQSW0WdQrdh9eJXaFKhJ6s0Vo98BGL1cB2HqY0xwyrze+hJw2kHWyKBDKiSw3RTTyQesF+0crxZaTwSp3t2/+rzluK9OaoABERibOARxJNHcAz1hbEp6sJMIJsL0q29Zu1RYZjqwyyA1rYZbaSJBP0n5nlv2PxV3rj/epwzJFq6Z95p+rpQWE68oJxLKJ31zaqmLme5HLErdzwQKBgQDEwtJHCPSgxAp2fL4Hi/nc87CQpwIph1z5uhlnsQBu/15zxW5iMHHhRylzHAxtOWjfVP+v29vs11FjLJwFngv2R44HDrtO9MtMq4Z6myjAwf0oKWWFpSy8rJZEB8HY8m0X5xImqfSG6Cl4tenrpvogqiO9OcoAbOe5VWW7y8c8cQKBgQDAUNFK4XWW0SmuAKu5esLDeH/9SVX/9phlbP2sQw8MN+N90H8e8QJ1BqHbM1EhAojXgvOQbQentsrserab+KBckcGuCBKw5hET5v762mLOTg3hDFK756P0+Knf/StsN4gak+jkliujnRTx0c1wcc+jA2qH0aMTSpyv6rMyep1/3QKBgGc6SvXHpgf+MfsN4Oi2sEUSeIy7ge/lu4qs7w0umKqjQZt9djb/cY+eNQnWKlLXbsTUpDxQHaa5JFLioYx06ZOw4LulJ/H5jftQdgI3Cv9uBvIeHcwq5zipV0CjzTiTn1aN/UDZo5dvj+prjij69nlSqeNpwSfN+xiJzBDljUaRAoGBAJwJdqbg432o2754gNyPRDNBM+eYdxSlSeURV4lLJ4xsVEIixuGd/rZg2TZ3Hp4/5jOl5mUKcamcYG0a68sFIWe6Q4Emv7OUF8skI0H5qy1km1I7o20edyMuFvbL/U1iiSW3WMEPLv0jWHkUFzHixeunu+nTKBNg+FyrexW78sppAoGBALXDPv/e7ueS+jpLoFt+RuxeKvSDmqM4mxNfwYc6EcdlRuduNNKilqvBLbuJZd6n2p4sSg0rDiLKWYN/bkyJZPWq8YvLjaHgON2vL/cjYrEa1h6SIkGllj/ASRlgzqQLOK7p2r2KlQvqCjTdrIAEgbIkcAPboUB1oiLATAs25Pcu"
