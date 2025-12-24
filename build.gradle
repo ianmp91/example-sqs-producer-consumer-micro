@@ -1,0 +1,64 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example.sqsmicro'
+version = '0.1.0-SNAPSHOT'
+description = 'Example project for sqs - Spring Boot Microservice'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+ext {
+	springCloudVersion = "4.0.0-M1"
+	springBootVersion = "4.0.0"
+	lombokVersion = "1.18.42"
+	sqsLibVersion = "0.1.1-SNAPSHOT"
+	bcpkixVersion = "1.82"
+	mockitoCoreVersion = "5.20.0"
+	mockitoInlineVersion = "5.2.0"
+	junitPlatformVersion = "6.0.0"
+	springDocVersion = "3.0.0"
+}
+
+dependencies {
+	// Lombok (opcional, pero ayuda con getters/setters/constructores)
+	compileOnly("org.projectlombok:lombok:${lombokVersion}")
+	annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+	// Lib SQS
+	implementation("com.example.sqslib:sqs-consumer-producer-lib:${sqsLibVersion}")
+
+	// Bouncycastle bcpkix-jdk18on 1.82
+	implementation("org.bouncycastle:bcpkix-jdk18on:${bcpkixVersion}")
+
+	// Spring Boot Starter Web (Para los Controllers)
+	implementation("org.springframework.boot:spring-boot-starter:${springBootVersion}")
+	implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+	// SpringDoc OpenAPI
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
+
+	// Test
+	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+	testImplementation("org.springframework.boot:spring-boot-test-autoconfigure:${springBootVersion}")
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:${springBootVersion}")
+	testImplementation("io.awspring.cloud:spring-cloud-aws-starter-sqs:${springCloudVersion}")
+	testImplementation("org.mockito:mockito-core:${mockitoCoreVersion}")
+	testImplementation("org.mockito:mockito-junit-jupiter:${mockitoCoreVersion}")
+	testImplementation("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

@@ -1,0 +1,32 @@
+logging:
+  level:
+    root: INFO
+    com.example.sqsmicro: DEBUG
+spring:
+  application:
+    name: sqs-producer-consumer-micro
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      sqs:
+        endpoint: http://elasticmq:9324
+      credentials:
+        access-key: dummy
+        secret-key: dummy
+cola:
+  aws:
+    sqs:
+      producer: "cola-aws-sqs-1"
+      consumer: "cola-aws-sqs-2"
+springdoc:
+  api-docs:
+    path: /v1/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+scheduler:
+  cron-expression: "0 * * * * *" # Cada minuto
