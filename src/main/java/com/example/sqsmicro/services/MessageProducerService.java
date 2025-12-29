@@ -50,6 +50,8 @@ public class MessageProducerService {
         request.setTransactionIdentifier("t1");
         request.setSequenceNmbr(new BigInteger("1"));
         request.setCorrelationID("t1");
+        request.setTransactionStatusCode("Start");
+        request.setRetransmissionIndicator(false);
         IATAAIDXFlightLegRQ.Airline airline = new IATAAIDXFlightLegRQ.Airline();
         airline.setCode("QR");
         airline.setCodeContext("1234");
