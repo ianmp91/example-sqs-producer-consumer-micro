@@ -25,8 +25,8 @@ public class FlightNotificationBuilder {
 		notif.setVersion(new BigDecimal("21.3"));
 		notif.setTimeStamp(LocalDateTime.now());
 		notif.setTarget("Test");
-		notif.setTransactionIdentifier(UUID.randomUUID().toString());
-		notif.setCorrelationID(UUID.randomUUID().toString()); // ID único para traza
+		notif.setTransactionIdentifier("t1");
+		notif.setCorrelationID("t1"); // ID único para traza
 		notif.setSequenceNmbr(BigInteger.ONE);
 		notif.setTransactionStatusCode("Start");
 
@@ -34,7 +34,7 @@ public class FlightNotificationBuilder {
 		// Indica quién está generando la alerta (Micro B)
 		var originator = new IATAAIDXFlightLegNotifRQ.Originator();
 		originator.setCompanyShortName("MicroService_B");
-		originator.setCode("Airlines");
+		originator.setCode("QR");
 		originator.setCodeContext("Internal");
 		notif.setOriginator(originator);
 
@@ -59,12 +59,12 @@ public class FlightNotificationBuilder {
 
 		// Configura origen/destino
 		var depStation = new FlightLegIdentifierType.DepartureAirport();
-		depStation.setValue("SCL");
+		depStation.setValue("LAX");
 		depStation.setCodeContext("IATA");
 		legId.setDepartureAirport(depStation);
 
 		var arrStation = new FlightLegIdentifierType.ArrivalAirport();
-		arrStation.setValue("MIA");
+		arrStation.setValue("GRU");
 		arrStation.setCodeContext("IATA");
 		legId.setArrivalAirport(arrStation);
 

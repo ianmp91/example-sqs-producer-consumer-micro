@@ -53,7 +53,7 @@ public class MessageProducerService {
         EncryptDecryptMessageUtil.EncryptedMessageBundle encryptedMessageBundle = encryptDecryptMessageUtil.encryptHybrid(xmlPayload);
         Map<String, String> requestMetadata = new HashMap<>();
         requestMetadata.put("message_type", "IATAAIDXFlightLegNotifRQ"); // Tipo de respuesta
-        requestMetadata.put("correlation_id", "1234567890"); // Mantener trazabilidad
+        requestMetadata.put("correlation_id", request.getCorrelationID()); // Mantener trazabilidad
         requestMetadata.put("key_public", encryptDecryptMessageUtil.getPublicKeyAsString()); //
         log.debug("Before preparing the SQS shipment. Metadata: {}", requestMetadata);
         MessageDto message = new MessageDto(
@@ -70,23 +70,23 @@ public class MessageProducerService {
         IATAAIDXFlightLegRQ request = new IATAAIDXFlightLegRQ();
         request.setEchoToken(UUID.randomUUID().toString());
         request.setTimeStamp(LocalDateTime.now());
-        request.setTarget("test");
+        request.setTarget("Test");
         request.setVersion(new BigDecimal("21.3"));
-        request.setTransactionIdentifier("t1");
-        request.setSequenceNmbr(new BigInteger("1"));
-        request.setCorrelationID("t1");
+        request.setTransactionIdentifier("t2");
+        request.setSequenceNmbr(BigInteger.TWO);
+        request.setCorrelationID("t2");
         request.setTransactionStatusCode("Start");
         request.setRetransmissionIndicator(false);
         IATAAIDXFlightLegRQ.Airline airline = new IATAAIDXFlightLegRQ.Airline();
         airline.setCode("QR");
-        airline.setCodeContext("1234");
+        airline.setCodeContext("IATA");
         request.setAirline(airline);
         String xmlPayload = xmlService.toXml(request);
         log.debug("Before preparing the SQS shipment. Payload to encrypt: {}", xmlPayload);
         EncryptDecryptMessageUtil.EncryptedMessageBundle encryptedMessageBundle = encryptDecryptMessageUtil.encryptHybrid(xmlPayload);
         Map<String, String> requestMetadata = new HashMap<>();
         requestMetadata.put("message_type", "IATAAIDXFlightLegRQ"); // Tipo de respuesta
-        requestMetadata.put("correlation_id", "1234567890"); // Mantener trazabilidad
+        requestMetadata.put("correlation_id", request.getCorrelationID()); // Mantener trazabilidad
         requestMetadata.put("key_public", encryptDecryptMessageUtil.getPublicKeyAsString()); //
         log.debug("Before preparing the SQS shipment. Metadata: {}", requestMetadata);
         MessageDto message = new MessageDto(
@@ -102,6 +102,8 @@ public class MessageProducerService {
     public void sendMessage(String payload, Map<String, String> metadata) throws Exception {
         log.debug("Before preparing the SQS shipment. Payload to encrypt: {}", payload);
         EncryptDecryptMessageUtil.EncryptedMessageBundle encryptedMessageBundle = encryptDecryptMessageUtil.encryptHybrid(payload);
+        metadata.put("message_type", metadata.get("message_type"));
+        metadata.put("correlation_id", metadata.get("correlation_id"));
         metadata.put("key_public", encryptDecryptMessageUtil.getPublicKeyAsString());
         MessageDto message = new MessageDto(
                 metadata,
