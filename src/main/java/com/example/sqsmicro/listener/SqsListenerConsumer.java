@@ -21,6 +21,9 @@ public class SqsListenerConsumer {
 
     @SqsListener("${cola.aws.sqs.consumer}")
     public void listenResponse(@Payload MessageDto messageDto) throws Exception {
+        log.debug("Message keyId received from cola-aws-sqs-2: " + messageDto.keyId());
+        log.debug("Message metadata received from cola-aws-sqs-2: " + messageDto.metadata());
+        log.debug("Message uniqueFlightId received from cola-aws-sqs-2: " + messageDto.uniqueFlightId());
         String messagePayload = encryptDecryptMessageUtil.decryptHybrid(messageDto.encryptedPayload(), messageDto.keyId());
         log.debug("Message received from cola-aws-sqs-2: {}", messagePayload);
     }
