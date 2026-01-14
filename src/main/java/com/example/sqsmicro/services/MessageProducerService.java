@@ -8,7 +8,6 @@ import com.example.sqsmicro.records.MessageDto;
 import com.example.sqslib.producer.SqsProducerService;
 import com.example.sqsmicro.records.UniqueFlightId;
 import com.example.sqsmicro.util.EncryptDecryptMessageUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -34,7 +33,7 @@ public class MessageProducerService {
     private final EncryptDecryptMessageUtil encryptDecryptMessageUtil;
     private final XmlService xmlService;
     private final FlightNotificationBuilder flightNotificationBuilder;
-    private final ExternalConfigService externalConfigService;
+    private final ConfigurationLoaderService configurationLoaderService;
 
 
     public MessageProducerService(
@@ -42,17 +41,17 @@ public class MessageProducerService {
             EncryptDecryptMessageUtil encryptDecryptMessageUtil,
             XmlService xmlService,
             FlightNotificationBuilder flightNotificationBuilder,
-            ExternalConfigService externalConfigService) {
+            ConfigurationLoaderService configurationLoaderService) {
         this.sqsProducerService = sqsProducerService;
         this.encryptDecryptMessageUtil = encryptDecryptMessageUtil;
         this.xmlService = xmlService;
         this.flightNotificationBuilder = flightNotificationBuilder;
-        this.externalConfigService = externalConfigService;
+        this.configurationLoaderService = configurationLoaderService;
     }
 
     public void sendFlightLegNotifRequest() throws Exception {
-        String targetQueue = externalConfigService.getQueueUrl();
-        String receiverPubKey = externalConfigService.getAirportPublicKey();
+        String targetQueue = configurationLoaderService.getQueueUrl();
+        String receiverPubKey = configurationLoaderService.getAirportPublicKey();
         log.debug("Before preparing the SQS shipment. TargetQueue {} | ReceiverPubKey {}", targetQueue, receiverPubKey);
         IATAAIDXFlightLegNotifRQ request = flightNotificationBuilder.buildNotif("QR", "1234");
         String xmlPayload = xmlService.toXml(request);
@@ -78,8 +77,8 @@ public class MessageProducerService {
     }
 
     public void sendFlightLegRequest() throws Exception {
-        String targetQueue = externalConfigService.getQueueUrl();
-        String receiverPubKey = externalConfigService.getAirportPublicKey();
+        String targetQueue = configurationLoaderService.getQueueUrl();
+        String receiverPubKey = configurationLoaderService.getAirportPublicKey();
         log.debug("Before preparing the SQS shipment. TargetQueue {} | ReceiverPubKey {}", targetQueue, receiverPubKey);
         IATAAIDXFlightLegRQ request = new IATAAIDXFlightLegRQ();
         request.setEchoToken(UUID.randomUUID().toString());
@@ -118,8 +117,8 @@ public class MessageProducerService {
     }
 
     public void sendMessage(String payload, Map<String, String> metadata) throws Exception {
-        String targetQueue = externalConfigService.getQueueUrl();
-        String receiverPubKey = externalConfigService.getAirportPublicKey();
+        String targetQueue = configurationLoaderService.getQueueUrl();
+        String receiverPubKey = configurationLoaderService.getAirportPublicKey();
         log.debug("Before preparing the SQS shipment. TargetQueue {} | ReceiverPubKey {}", targetQueue, receiverPubKey);
         log.debug("Before preparing the SQS shipment. Payload to encrypt: {}", payload);
         encryptDecryptMessageUtil.loadPublicKey(receiverPubKey);
